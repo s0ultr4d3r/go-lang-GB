@@ -1,20 +1,20 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
-	//  "html/template"
+	"html/template"
 	"image"
 	"image/color"
 	"image/draw"
 	"image/png"
-
-	// "net/http"
+	"log"
+	"net/http"
 	"os"
-	// "text/template"
+	"text/template"
 )
 
 // Summarized func for sum, ,ade for tests
-
 func Summarized(xs []float64) float64 {
 	total := float64(0)
 	for i := 0; i < len(xs); i++ {
@@ -23,7 +23,7 @@ func Summarized(xs []float64) float64 {
 	return total
 }
 
-/* // func for http
+// func for http
 
 type IndexTemplate struct {
 	Title string
@@ -31,7 +31,7 @@ type IndexTemplate struct {
 }
 
 func parse(in IndexTemplate) ([]byte, error) {
-	tmpl, err := template.New("index.tmpl").ParseFiles("./assets/index.tnpl")
+	tmpl, err := template.New("index.tmpl").ParseFiles("./assets/index.tmpl")
 	if err != nil {
 		return nil, err
 	}
@@ -43,17 +43,15 @@ func parse(in IndexTemplate) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
+var Name string
+
 func handler(w http.ResponseWriter, r *http.Request) {
 
-	name, ok := r.URL.Query()["name"]
+	Name := r.URL.Query().Get("name")
+	log.Println(Name)
+	log.Println(string(Name))
 
-	if !ok {
-		log.Println("No name")
-		return
-	}
-
-	return name
-} */
+}
 
 // Starting drawing
 
@@ -95,34 +93,20 @@ func main() {
 	xs := []float64{1, 2, 2, 2}
 	fmt.Println(Summarized(xs))
 
-	/* // Задание по Hello
+	// Задание по Hello
 
-	const tmpl = "{{.Greeting}} {{.Name}}"
-
-	data := struct {
-		Greeting string
-		Name     string
-	}{"Hello", "Joe"}
-
-	t := template.Must(template.New("").Parse(tmpl))
-
-	err = t.Execute(os.Stdout, data)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Запуск http сервера
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":8080", nil)
 
-	indexTemplate := IndexTemplate{
+	IndexTemplate := IndexTemplate{
 		Title: "Test",
-		Name:  handler(),
+		Name:  Name,
 	}
 
-	parsedTmpl, err := parse(indexTemplate)
+	parsedTmpl, err := parse(IndexTemplate)
 	if err != nil {
 		log.Fatal(err)
-	} */
+	}
 
+	fmt.Println(string(parsedTmpl))
 }
